@@ -1,0 +1,30 @@
+{
+  "name": "visdial-amt-chat",
+  "version": "1.0.0",
+  "description": "Node.js source for the two-person chat interface used to collect VisDial",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "express": "^4.12.4",
+    "knex": "^0.8.6",
+    "moment": "^2.10.3",
+    "socket.io": "^1.3.5",
+    "mysql": "*",
+    "async": "*",
+    "underscore": "*",
+    "redis": "*"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/batra-mlp-lab/visdial-amt-chat.git"
+  },
+  "bugs": {
+    "url": "https://github.com/batra-mlp-lab/visdial-amt-chat/issues"
+  },
+  "homepage": "https://github.com/batra-mlp-lab/visdial-amt-chat#readme"
+}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Countdown Examples 3</title>
+
+
+</head>
+<body style="background-color:#EDEDED">
+
+
+
+
+
+<p>Example 3 - 3 second timer with an "onComplete" handler</p>
+
+<!-- START COUNTDOWN -->
+<script src="countdown.js"></script>
+
+<script>
+
+function doneHandler(result) {
+	
+	// Result is a javascript Date object, containing the deadline time.
+	//
+	// 		NOTES on the javascript Date object:
+	// 			- months are 0-11, not 1-12
+	// 			- "day" is day of the week (0-6) representing sunday-saturday
+	// 			- "date" is the day of the month (0-31)
+	
+	var year = result.getFullYear();
+	var month = result.getMonth() + 1; // bump by 1 for humans
+	var day = result.getDate();
+	var h = result.getHours();
+	var m = result.getMinutes();
+	var s = result.getSeconds();
+	
+	var UTC = result.toString();
+	
+	var output = UTC + "\n";
+	output += "year: " + year + "\n";
+	output += "month: " + month + "\n";
+	output += "day: " + day + "\n";
+	output += "h: " + h + "\n";
+	output += "m: " + m + "\n";
+	output += "s: " + s + "\n";
+	
+	alert(output);
+}
+
+var myCountdownTest = new Countdown({
+								 	time: 3,
+									width	: 300, 
+									height	: 50,
+									onComplete : doneHandler
+									});
+
+
+
+</script>
+<!-- END COUNTDOWN -->
+
+
+</body>
+</html>

@@ -1,0 +1,719 @@
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <!-- Standard Meta -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="dist/semantic.css">
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
+
+    <!-- Used with Tab History !-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.address/1.6/jquery.address.min.js"></script>
+    <script src="dist/semantic.js"></script>
+    <script src="holder.js"></script>
+
+    <script src="countdown/countdown.js"></script>
+  </head>
+  <body>
+
+  <!-- Modal-->
+    <div class="ui modal" id="feedback-modal">
+        <div class="content">
+            <div class="description ui input">
+                <h3>Feedback</h3>
+                <textarea rows="10" cols="50" placeholder="Feedback" id="feedback"></textarea>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui positive right labeled icon button" id="approve_button">Submit Hit!<i class="checkmark icon"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class "four column centered row" style="text-align: center;">
+        <h1>Live Question/Answering about an Image.</h1>
+    </div>
+
+  <!-- Form -->
+    <div class="ui stackable grid">
+        <div class="one wide column"></div>
+        <div class="ui accordion fourteen wide column">
+            <div  id="instructions" class="title">
+                <h2><i class="dropdown icon"></i>Instructions</h2>
+            </div>
+            <div id="instructions_content" class="content">
+                <p> In this task, you will be talking to a fellow Turker. You will either be asking questions or answering questions about an image. You will be given more specific instructions once you are connected to a fellow Turker. </p>
+
+                <p> Stay tuned. A message and a beep will notify you when you have been connected with a fellow Turker.</p>
+
+                <p> Please keep the following in mind while chatting with your fellow Turker:
+                <div class="ui ordered list">
+                    <span class="item">Please directly start the conversation. Do not make small talk.</span>
+                    <span class="item">Please do not write potentially offensive messages.</span>
+                    <span class="item">Please do not have conversations about something other than the image. Just either ask questions, or answer questions about an image (depending on your role).</span>
+                    <span class="item">Please do not use chat/IM language (e.g, "r8" instead of "right"). Please use professional and grammatically correct English.</span>
+                    <span style="font-weight:bold; color:red;" class="item">Please have a natural conversation. Unnatural sounding conversation including awkward messages and long silences will be rejected.</span>
+                    <span class="item">Please note that you are expected to complete and submit the hit in one go (once you have been connected with a partner). You cannot resume hits.</span>
+                    <span style="font-weight:bold;color:red;" class="item">If you see someone who isn't performing HITs as per instructions or is idle for long, do let us know. We'll make sure we keep a close watch on their work and reject it if they have a track record of not doing HITs properly or wasting too much time. Make sure you include a snippet of the conversation and your role (questioner or answerer) in your message to us, so we can look up who the other worker was.</span>
+                    <span style="font-weight:bold;color:red;" class="item">Do not wait for your partner to disconnect to be able to type in responses quickly, or your work will be rejected.</span>
+                </div>
+                <p> <b>
+                    Please complete one hit before proceeding to the other. Please don't open multiple tabs, you cannot chat with yourself.</b>
+                </p>
+            </div>
+        </div>
+        <div class="one wide column"></div>
+
+        <div class="one wide column"></div>
+        <div class="ui accordion fourteen wide column" id="finer_instructions"></div>
+        <div class="one wide column"></div>
+
+        <div class="one wide column"></div>
+        <div class="ui accordion fourteen wide column" id="examples" style="visibility:visible">
+            <div id="example_heading" class="title active">
+                    <h2><i class="dropdown icon"></i>Examples</h2>
+            </div>
+            <div id="example_content" class="content active">
+                <div><img class="ui centered image" src="example_textual.png" ></div> <!--style="width:95%;height: 70%;"-->
+            </div>
+            <!-- <div class="content">
+                <div style="float:left" id="example_blur" class="transition visible">
+                    <div><img class="ui centered image" src="example_blur.jpg" style="width:95%;height: 30%;"></div>
+                    <br>
+                    <div style="margin-left: 20px;">
+                        <p> Question 1: Are there any people ? </p>
+                        <p> Question 2: What gender are they ? </p>
+                        <p> Question 3: Are they doing something together ? </p>
+                        <p> Question 4: What is the man doing ? </p>
+                        <p> Question 5: Is he smiling ? </p>
+                        <p> Question 6: What is the woman doing ? </p>
+                        <p> Question 7: Do they see each other ? </p>
+                        <p> Question 8: What color clothes are each of them wearing ?  </p>
+                        <p> Question 9: What time of the day is it ? </p>
+                        <p> Question 10: What else is present in the scene ?  </p>
+                    </div>
+                </div>
+                <div style="float:right" id="example_clear" class="transition visible">
+                    <div><img class="ui centered image" src="example_clear.jpg" style="width:95%;height: 30%;"></div>
+                    <br>
+                    <div style="margin-left: 20px;">
+                        <p> Answer 1: Yes, two. </p>
+                        <p> Answer 2: One male and one female. </p>
+                        <p> Answer 3: Doesn't look like it. </p>
+                        <p> Answer 4: He's walking. Looks like he just entered through a door.  </p>
+                        <p> Answer 5: Can't tell. Only their silhouettes are visible. </p>
+                        <p> Answer 6: She's admiring two vases kept in a glass  shelf. </p>
+                        <p> Answer 7: No.  </p>
+                        <p> Answer 8: Can't tell. </p>
+                        <p> Answer 9: Morning or afternoon. </p>
+                        <p> Answer 10: Cups and saucers displayed on shelves. </p>
+                    </div>
+                </div>
+            </div>  -->
+        </div>
+        <div class="one wide column"></div>
+
+        <div class="one wide column"></div>
+        <div class="fourteen wide centered row">
+            <h2 id ="hit_caption"></h2>
+        </div>
+        <div class="one wide column"></div>
+
+        <div id = "worker_role" class "four column centered row" style="text-align: center;">
+        </div>
+
+        <div class="one wide column"></div>
+        <div class="one wide column"></div>
+        <div class="eight wide column">
+            <img class="ui centered image" data-src="holder.js/800x400?text=Hello.%20Image%20will%20appear%20when%20fellow%20Turker%20gets%20connected." id="hit_image">
+            <br><br>
+<!--             <div id="answer_scroll" class "four column centered row" style="text-align: center; visibility:hidden">
+                    <h3>SCROLL DOWN</h3>
+                </div>
+ -->
+            <div id="timer" >
+            </div>
+            <br><br>
+            <script>
+            </script>
+            <div class="ui negative message" style="" id="preview_message">
+                <p> This is preview mode. Accept the HIT to enable the chatbox and load the image.</p>
+            </div>
+        </div>
+        <div class="five wide column"  id="chatbox">
+            <div class="ui feed" id="chat-messages">
+
+            </div>
+
+            <form class="ui form" id="chat-form" action="">
+                <div id="partnerTyping"></div>
+                <div id="chat_error"></div>
+                <h4 class="ui dividing header" id="chatbox-heading">Type Message Here:</h4>
+                <div class="fields">
+                    <div class="two fields">
+                        <div class="thirteen wide field">
+                            <input disabled type="text" placeholder="Message" id="text-msg">
+                        </div>
+                        <div class="two wide field">
+                            <div class="ui primary disabled button" id="send">
+                                Send
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+            <button class="ui button size wide column red"  id="finish_hit" disabled>
+                End Conversation And Finish Hit
+            </button>
+        </div>
+        <div class="one wide column"></div>
+
+        <div class="one wide column"></div>
+        <div class="one wide column"></div>
+        <div class="eight wide column">
+            <div id="answer_question_scroll" class "four column centered row" style="text-align: center; visibility:hidden">
+                <h3>FYI: What your fellow Turker (Questioner) sees.</h3>
+            </div>
+            <img class="ui centered image" id="blur_hit_image">
+        </div>
+        <div class="five wide column"  id="chatbox">
+        </div>
+        <div class="one wide column"></div>
+
+    </div>
+    <form id='mturk_form' action="MTURK_FORM_TO_SUBMIT" method="POST">
+        <input type="hidden" id="assignmentId" name="assignmentId" value='MTURK_ASSIGNMENT_ID'>
+        <input type="hidden" id="workerId" name="workerId" value='MTURK_WORKER_ID'>
+        <input type="hidden" id="hitDuration" name="hitDuration" value='HIT_DURATION'>
+        <input type="hidden" id="hitResult" name="hitResult" value='HIT_RESULT'>
+        <input type="hidden" id="hitComment" name="hitComment" value='HIT_COMMENT'>
+    </form>
+    <script src="url.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.js"></script>
+    <script>
+        var host = location.origin;
+
+        var is_preview = true;
+        var is_sandbox = true;
+        var is_partner_connected = true;
+
+        var assignmentId = undefined;
+        var workeriId = undefined;
+        var hitId = undefined;
+
+        var workerRole = undefined;
+
+        var amazon_sandbox_host = 'https://workersandbox.mturk.com/mturk/externalSubmit';
+        var amazon_host = 'https://www.mturk.com/mturk/externalSubmit';
+
+        var url_parse = url.parse(window.location.href);
+        console.log(url_parse["host"]);
+
+        var parameters = url.get(url_parse["query"]);
+        if(parameters['turkSubmitTo'] === 'https://workersandbox.mturk.com') {
+            is_sandbox = true;
+        }
+        else {
+            is_sandbox = false;
+        }
+
+        console.log(parameters);
+
+        if(parameters != undefined) {
+            if("assignmentId" in parameters && parameters["assignmentId"]== "ASSIGNMENT_ID_NOT_AVAILABLE") {
+                is_preview = true;
+            }
+            else if("assignmentId" in parameters && parameters["assignmentId"] != "ASSIGNMENT_ID_NOT_AVAILABLE") {
+                is_preview = false;
+                assignmentId = parameters["assignmentId"];
+                hitId = parameters["hitId"];
+                workerId = parameters["workerId"];
+                document.getElementById('assignmentId').value = assignmentId;
+                document.getElementById('workerId').value = workerId;
+                var form = document.getElementById('mturk_form');
+
+                // Gets whether it is sandbox or real AMT (or nothing)
+                var service = parameters["turkSubmitTo"];
+
+                if (service && service.length > 0) {
+                    submitAction = true;
+                    form.action = service + '/mturk/externalSubmit';
+                } else {
+                    submitAction = false;
+                    form.action = '';
+                }
+            }
+            else {
+                console.log('assignmentId not present');
+            }
+        }
+        console.log( "is_sandbox:" + is_sandbox);
+        console.log( "is_preview:" + is_preview);
+
+        var countDownFinished = false;
+        var noOfMsg = 0;
+        var noOfMsgPartnerOld = 0;
+        var noOfMsgPartnerNew = 0;
+
+        var partnerTyping = false;
+        var workerTyping = false;
+        var timeout;
+        var chatTimeout;
+
+        console.log(host);
+
+        var socket = undefined;
+        if(is_preview == true){
+            $('#instructions').attr('class', 'title active');
+            $('#instructions_content').attr('class', 'content active');
+        }
+        if ( is_preview == false) {
+            socket = io.connect(host,{path: '/SUB_FOLDER/socket.io/', transports: ["websocket"]}); // TODO
+            $('#preview_message').toggle();
+            console.log('should toggle');
+        }
+        var window_height = $( window ).height();
+
+        socket.emit('add user', {'workerId': workerId, hitId: hitId, assignmentId: assignmentId});
+        var isMute = false;
+
+        $('#mute-checkbox').checkbox({
+            onEnable: function(){
+                console.log('enable');
+                isMute = true;
+            },
+            onDisable: function(){
+                console.log('disbale');
+                isMute = false;
+            }
+        });
+
+        $('#username').keyup(function(e){
+            if(e.keyCode == 13)
+            {
+                $('#approve_button').trigger('click');
+            }
+        });
+
+        $('.ui.accordion').accordion();
+
+        function countdownComplete(){
+            countDownFinished = true;
+            if ( noOfMsg>=10){
+               $('#finish_hit').prop("disabled", false);
+            }
+        }
+
+        function renderDialog(idx){
+                if (idx==1){
+                    var text = 'Do not describe unimportant details.';
+                }else if(idx == 2){
+                    var text = 'Do not describe things that might have happened in the future or past.';
+                }else if(idx == 3){
+                    var text = 'Do not describe what a person might say.';
+                }else if(idx == 4){
+                    var text = 'Do not give people proper names.';
+                }else if (idx == 5){
+                    var text = 'This is the BEST sentence! Please apply the same rule to describe following 3 images.';
+                }else if(idx == 6){
+                    var text = 'Please includes more details.';
+                }else if(idx==7){
+                    var text = 'Please enter more than 3 word.';
+                }else if(idx==8){
+                    var text = 'Error occured when submitting the form, please try again.';
+                }else if(idx==9){
+                    var text = 'Cannot send empty message.';
+                }
+                else if(idx==11){
+                    var text = 'Please use longer words on occasion.';
+                }else if(idx==12){
+                    var text = 'Please end the question with ?';
+                }else if(idx==13){
+                    var text = 'Please try in AMT';
+                }else if(idx==14){
+                    var text = 'Your QUESTION is too short.';
+                }else if(idx==15){
+                    var text = 'Your QUESTION is too long.';
+                }
+                clearTimeout(chatTimeout);
+                $('#chat_error').html(text);
+                chatTimeout = setTimeout(chatTimeoutFunction, 3000);
+
+                // // $("#chat-error-modal" ).text(text);
+                // // $("#chat-error-modal" ).dialog('open');
+                // $('#chat_error').html(text);
+        }
+
+        function removeWhitespace(in_str) {
+            // Replace all whitespaces with single space and remove trailing whitespaces
+            var out_str = in_str.replace(/\s+/g, ' ');
+            out_str = out_str.trim();
+            return out_str;
+        }
+
+        function processQuestion(curr_ques){
+
+            curr_ques = removeWhitespace(curr_ques);
+            var split_arr = curr_ques.split(' ');
+            var newSent = split_arr.join(' ');
+            // At least 8 words requirement
+            // if (split_arr.length < 3){
+            //     renderDialog(7);
+            //     return -1;
+            // }
+
+            if (newSent.length < 5) {
+                renderDialog(14);
+                return -1;
+            }
+
+            // if (newSent.length > 100) {
+            //     renderDialog(15);
+            //     return 0;
+            // }
+
+            if (curr_ques[curr_ques.length-1] != '?'){
+                renderDialog(12);
+                return -1;
+            }
+
+            var count = 0;
+            // At least 2 characters per word minimum with two words being able to be 1 character (e.g., I, A, 3)
+            // Very loose lower bound; just to weed out bad workers
+            var min_char = (split_arr.length-2)*2;
+            split_arr.forEach( function(d) { count = count + d.length; });
+            console.log(count + " ? " + min_char);
+            if (count < min_char) {
+                renderDialog(11);
+                return -1;
+            }
+            return 0;
+        }
+
+        function processAnswer(curr_ans){
+            // var curr_ans = $('#answer').val();
+            curr_ans = removeWhitespace(curr_ans);
+            // At least 8 words requirement
+            if (curr_ans == '' || curr_ans == ' '){
+                renderDialog(9);
+                return -1;
+            }
+            return 0;
+        }
+
+        function renderFinalInstructions(role, message){
+            console.log(message['caption']);
+            var instruct = '';
+            if(role == 'answer'){
+
+                $( "#worker_role" ).append('<h2 style="color:red">You have to ASK Questions about the image.</h2>');
+                workerRole = 'question';
+                $("#hit_caption").html('Caption: ' + message['caption']);
+                $('#hit_caption').attr('style', 'color:blue');
+                $( "#hit_image" ).remove();
+
+                instruct = '<div class="title active"><h2><i class=" dropdown icon" style="color:red"></i>' + 'Instructions for the' + ' Questioner</h2></div><div class="content active"><div class="ui ordered list"><span class="item" style="color:red">Given below is a <b>textual description </b> of the image.</span><span class="item"><b>Your objective is to ask questions about the image that help you imagine the scene better.</b></span><span class="item">Your fellow turker will answer these questions for you. They can see the original image.</span></span><span class="item">You are encouraged to enquire about fine grained details of the image, and query about things that have caught your attention.</span><span class="item">You are expected to ask a <b>total of 10 questions.</b></span><span class="item">In case your partner disconnects, continue asking questions about the image till you complete 10 questions.</span><span class="item">You will be allowed to submit the hit once you have finished asking 10 questions.</span><span class="item"><b>You will be paid only if you submit the hit. In case you get disconnected or leave the conversation mid way, no reward will be awarded.</b></span><span class="item"><b>Begin asking questions NOW.</b></span></div></div>';
+            }
+            else{
+                workerRole = 'answer';
+                $( "#worker_role" ).append('<h2 style="color:blue">You have to ANSWER questions about the image.</h2>');
+                $("#hit_caption").html('Caption: ' + message['caption']);
+                $('#hit_caption').attr('style', 'color:red');
+                document.getElementById("hit_image").src = message['image_url'];
+                console.log(message['caption']);
+                instruct = '<div class="title active"><h2><i class="dropdown icon"></i>' + 'Instructions for the' + ' Answerer</h2></div><div class="content active"><div class="ui ordered list"><span class="item">Your fellow Turker will ask you questions about the image below. They can see only a textual description of the image.</span><span class="item"><b>Your objective is to answer these questions.</b></span><span class="item">The answers needn’t be short and concise. They should resemble responses in a natural conversation and how most people would answer the question.</span><span class="item">You are expected to answer a <b>total of 10 questions.</b></span><span class="item">In case your partner disconnects, please continue by stating facts about the image. Facts are sentences that are descriptive and informative of the image.</span><span class="item">You will be allowed to submit the hit once you have finished sending a total of 10 messages.</span><span class="item"><b>You will be paid only if you submit the hit. In case you get disconnected or leave the conversation mid way, no reward will be awarded.</b> </span></div></div>';
+
+                // $( "#answer_scroll" ).attr("style", "text-align: center; visibility:visible; margin-top:-20px");
+                // $( "#answer_question_scroll" ).attr("style", "text-align: center; visibility:visible");
+            }
+            $( "#finer_instructions" ).append(instruct);
+
+            $('#example_heading').attr('class', 'title');
+            $('#example_content').attr('class', 'content');
+            //$( "#examples" ).attr("style", "visibility:visible");
+        }
+
+        socket.on('connect', function () {
+            console.log('Connected to the server');
+        });
+
+        socket.on('paired', function(message) {
+                console.log("Paired with: " + JSON.stringify(message));
+                console.log("Role: " + message['role']);
+                // partner_name = message['partnerName'];
+                $('#send').removeClass('disabled');
+                $('#text-msg').prop('disabled', false);
+
+                var summary = $("<div class='summary system-message'></div>");
+                summary.html("<hr>" + "Fellow Turker" + " connected. Now you can send messages<hr>");
+                var content = $("<div class='content'>");
+                var event = $("<div class='event'></div>");
+                content.append(summary);
+                event.append(content);
+                is_partner_connected = true;
+                // document.getElementById("hit_image").src = message['image_url'];
+                renderFinalInstructions(message['role'], message);
+                $('#hit_image').attr('style', 'width = 100%; height = auto;');
+                var curr_height = $('#chat-messages').height();
+                $('#chat-messages').height(curr_height + event.height());
+                $('#chat-messages').append(event);
+                $("#chat-messages").animate({ scrollTop: $('#chat-messages')[0].scrollHeight}, 50);
+                var aSound = document.createElement('audio');
+                aSound.setAttribute('src', 'notification.mp3');
+                aSound.play();
+
+                var myCountdown1 = new Countdown({time:120,
+                                rangeHi: "minutes",
+                                hideLabels : true,
+                                hideLine: true,
+                                style:"boring",
+                                width: 100,
+                                height: 30,
+                                onComplete: countdownComplete,
+                                target: "timer"});
+                $('#timer').prop("hidden", "true");
+                PageTitleNotification.On("New Chat Message!", 5000);
+        });
+
+        socket.on('receive message', function(message) {
+            console.log("Received: " + message);
+            console.log('Number of messges sent by partner :' + message['noOfMsg']);
+            noOfMsgPartnerNew = message['noOfMsg'];
+            var summary = $("<div class='bubble me'></div>");
+            summary.html(message['noOfMsg'] + ". Fellow Turker"+ ":<br/> " + message['message']);
+            var content = $("<div class='content'>");
+            var event = $("<div class='event'></div>");
+            content.append(summary);
+            event.append(content);
+            var curr_height = $('#chat-messages').height();
+            $('#chat-messages').height(curr_height + event.height());
+            $('#chat-messages').append(event);
+            $("#chat-messages").animate({ scrollTop: $('#chat-messages')[0].scrollHeight}, 50);
+
+            var aSound = document.createElement('audio');
+            aSound.setAttribute('src', 'msgReceived.mp3');
+            aSound.play();
+        });
+
+        socket.on('disconnected partner', function(message){
+            //$('#send').addClass('disabled');
+            //$('#text-msg').prop('disabled', true);
+            var summary = $("<div class='summary system-message'></div>");
+            summary.html("<hr>" + "Fellow Turker" + " disconnected. Please finish 10 messages as per the above instructions and submit the hit. <hr>");
+            var content = $("<div class='content'>");
+            var event = $("<div class='event'></div>");
+            content.append(summary);
+            event.append(content);
+            is_partner_connected = false;
+            var curr_height = $('#chat-messages').height();
+            $('#chat-messages').height(curr_height + event.height());
+            $('#chat-messages').append(event);
+            $("#chat-messages").animate({ scrollTop: $('#chat-messages')[0].scrollHeight}, 50);
+
+            //$('#finish_hit').prop("disabled", false); //Do not allow them to submit the hit.
+        });
+
+        socket.on('error', function(message){
+            var summary = $("<div class='summary system-message'></div>");
+            summary.html("<hr>" + message['errorMsg'] + "<hr>");
+            var content = $("<div class='content'>");
+            var event = $("<div class='event'></div>");
+            content.append(summary);
+            event.append(content);
+
+            var curr_height = $('#chat-messages').height();
+            $('#chat-messages').height(curr_height + event.height());
+            $('#chat-messages').append(event);
+            $("#chat-messages").animate({ scrollTop: $('#chat-messages')[0].scrollHeight}, 50);
+        });
+
+        function timeoutFunction() {
+            workerTyping = false;
+            socket.emit("typing", false);
+            $('#partnerTyping').html('');
+        }
+
+        function chatTimeoutFunction() {
+            $('#chat_error').html('');
+        }
+
+        socket.on('is typing', function(message) {
+            if (message['isTyping'] == 'yes') {
+                    $('#partnerTyping').html('<p>Turker is typing ...<p>');
+                    console.clear();
+                    console.log('NOW TYPING:' + partnerTyping)
+                    timeout = setTimeout(timeoutFunction, 6000);
+            }
+            else {
+                $('#partnerTyping').html = '';
+            }
+        });
+
+        $("#text-msg").keypress(function(e){
+            if (e.which !== 13) {
+                if (workerTyping === false && $("#text-msg").is(":focus")) {
+                    workerTyping = true;
+                    socket.emit('typing', true);
+                } else {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(timeoutFunction, 5000);
+                }
+            }
+        });
+
+        $('#text-msg').bind("cut copy paste",function(e) {
+            e.preventDefault();
+        });
+
+        $('#finish_hit').click(function(){
+            if(noOfMsg < 10){
+                $('#finish_hit').prop("disabled", true);
+            }
+            else{
+                $('#feedback-modal')
+                .modal('setting', 'closable', false)
+                .modal({
+                    onApprove : function() {
+                        socket.emit('finish hit', {hitId: hitId, assignmentId: assignmentId, workerId: workerId,
+                        feedback: $('#feedback').val()});
+                        $('#mturk_form').submit();
+                    }
+                })
+                .modal('show');
+            }
+        });
+
+        $('#send').click(function(){
+
+            clearTimeout(timeout);
+            timeout = setTimeout(timeoutFunction, 0);
+            clearTimeout(chatTimeout);
+
+            msgToSend = $('#text-msg').val();
+            msgToSend = msgToSend.replace(/(<([^>]+)>)/ig,"");
+
+            var finalMsgToSend;
+            if(workerRole != undefined){ // Check if it is a valid message.
+                if(workerRole == 'question'){
+                    finalMsgToSend = processQuestion(msgToSend);
+                }
+                else{
+                    finalMsgToSend = processAnswer(msgToSend);
+                }
+            }
+            if(finalMsgToSend != -1 ){ // If it is a valid message, check if the person is allowed to send it.
+
+                allowToSendChat = false;
+                if(noOfMsgPartnerNew != -1){
+                    if(workerRole == 'question'){   // for person questioning
+                        if(noOfMsgPartnerNew == 0){
+                            if(noOfMsg == 0)
+                                allowToSendChat = true;
+                            else
+                                allowToSendChat = false;
+                        }
+                        else{
+                            if(noOfMsgPartnerNew == noOfMsgPartnerOld + 1){
+                                 noOfMsgPartnerOld = noOfMsgPartnerNew;
+                                 allowToSendChat = true;
+                            }
+                            else if(noOfMsgPartnerNew == noOfMsgPartnerOld){
+                                allowToSendChat = false;
+                                clearTimeout(chatTimeout);
+                                $('#chat_error').html('Wait for a response.');
+                                chatTimeout = setTimeout(chatTimeoutFunction, 4000);
+                            }
+                        }
+                    }
+                    else{   // for person who is answering
+                        if(noOfMsgPartnerNew == 0){
+                            // wait for person to ask a question
+                            allowToSendChat = false;
+                            clearTimeout(chatTimeout);
+                            $('#chat_error').html('Wait for a response.');
+                            chatTimeout = setTimeout(chatTimeoutFunction, 3000);
+                        }
+                        else{
+                            if(noOfMsgPartnerNew == noOfMsgPartnerOld + 1){
+                                 noOfMsgPartnerOld = noOfMsgPartnerNew;
+                                 allowToSendChat = true;
+                            }
+                            else if(noOfMsgPartnerNew == noOfMsgPartnerOld){
+                                allowToSendChat = false;
+                                clearTimeout(chatTimeout);
+                                $('#chat_error').html('Wait for a response.');
+                                chatTimeout = setTimeout(chatTimeoutFunction, 3000);
+                            }
+                        }
+
+                    }
+                }
+
+                if(!is_partner_connected){
+                    noOfMsgPartnerNew = -1;
+                    allowToSendChat = true;
+                }
+
+                if(allowToSendChat){ //&& noOfMsg < 10
+                    console.log(msgToSend);
+
+                        PageTitleNotification.Off();
+                        noOfMsg = noOfMsg + 1;
+                        socket.emit('chat message', {msg: msgToSend, hitId: hitId, assignmentId: assignmentId, workerId: workerId, role: workerRole, seqId: noOfMsg}); // emit the role here.
+
+                        // The submit post button is disabled here
+                        if (noOfMsg>=10) {
+                            $('#finish_hit').prop("disabled", false);
+                            //$('#finish_hit').click(); //Complete the hit as soon as 10 get over. Here for answer make change
+                            //$('#finish_hit').prop("disabled", false);
+                        }
+                        var summary = $("<div class='bubble you'></div>");
+                        summary.html(noOfMsg + ". You: " + " <br/> " + msgToSend);
+                        var content = $("<div class='content'>");
+                        var event = $("<div class='event'></div>");
+                        content.append(summary);
+                        event.append(content);
+                        var curr_height = $('#chat-messages').height();
+                        $('#chat-messages').height(curr_height + event.height());
+                        $('#chat-messages').append(event);
+                        $('#text-msg').val('');
+
+                        $("#chat-messages").animate({ scrollTop: $('#chat-messages')[0].scrollHeight}, 50);
+                }
+                 return false;
+            }
+        });
+
+        $( "#chat-form" ).submit(function( event ) {
+            if(!$('#send').hasClass('disabled')){
+                $('#send').trigger('click');
+            }
+            event.preventDefault();
+        });
+
+        var PageTitleNotification = {
+            Vars:{
+                OriginalTitle: document.title,
+                Interval: null
+            },
+            On: function(notification, intervalSpeed){
+                var _this = this;
+                _this.Vars.Interval = setInterval(function(){
+                     document.title = (_this.Vars.OriginalTitle == document.title)
+                                         ? notification
+                                         : _this.Vars.OriginalTitle;
+                }, (intervalSpeed) ? intervalSpeed : 1000);
+            },
+            Off: function(){
+                clearInterval(this.Vars.Interval);
+                document.title = this.Vars.OriginalTitle;
+            }
+        };
+    </script>
+  </body>
+</html>

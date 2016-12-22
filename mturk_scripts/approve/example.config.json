@@ -1,0 +1,6 @@
+{
+    "db_user": "visdial",
+    "db_name": "visdial_chat",
+    "db_pass": "ENTER_PASSWORD_HERE",
+    "root": "/path/to/visdial-amt-chat/mturk_scripts/"
+}
