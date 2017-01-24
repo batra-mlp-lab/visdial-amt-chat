@@ -1,6 +1,9 @@
 ## VisDial AMT Chat
 
 Source for the two-person chat interface used to collect the [VisDial dataset][10] ([arxiv.org/abs/1611.08669][1]) on Amazon Mechanical Turk.
+A demo is available [here][12] (open in two separate tabs to be paired for conversation).
+
+![VisDial AMT Interface][11]
 
 ### How things work
 
@@ -58,3 +61,5 @@ BSD
 [8]: https://redis.io/
 [9]: https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-14-04
 [10]: http://visualdialog.org/
+[11]: http://i.imgur.com/1bv7yxv.png
+[12]: https://godel.ece.vt.edu/visdial_chat/
