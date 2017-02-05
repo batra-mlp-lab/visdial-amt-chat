@@ -88,18 +88,18 @@ class Answer(BaseModel):
 def createDatabaseTables():
     database.connect()
 
-    if not Answer.table_exists():
-        database.create_table(Answer)
-    if not Question.table_exists():
-        database.create_table(Question)
     if not Image.table_exists():
         database.create_table(Image)
-    if not AMTHits.table_exists():
-        database.create_table(AMTHits)
     if not Caption.table_exists():
         database.create_table(Caption)
+    if not AMTHits.table_exists():
+        database.create_table(AMTHits)
     if not Feedback.table_exists():
         database.create_table(Feedback)
+    if not Question.table_exists():
+        database.create_table(Question)
+    if not Answer.table_exists():
+        database.create_table(Answer)
     print "All database tables created."
 
 def fillPilotData():
