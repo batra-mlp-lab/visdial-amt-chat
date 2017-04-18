@@ -5,6 +5,18 @@ A demo is available [here][12] (open in two separate tabs to be paired for conve
 
 ![VisDial AMT Interface][11]
 
+If you find this code useful, consider citing our work:
+
+```
+@inproceedings{visdial,
+  title={{V}isual {D}ialog},
+  author={Abhishek Das and Satwik Kottur and Khushi Gupta and Avi Singh
+    and Deshraj Yadav and Jos\'e M.F. Moura and Devi Parikh and Dhruv Batra},
+  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
+  year={2017}
+}
+```
+
 ### How things work
 
 The real-time chat interface is built using Node.js and Socket.io. We use Redis to maintain a pool of images for live HITs and all data finally resides in a MySQL database.
