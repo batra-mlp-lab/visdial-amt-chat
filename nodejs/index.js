@@ -141,8 +141,7 @@ io.on('connection', function(socket){
                                 var found_image = false;
                                 numList = us.range(60); // Will change according to the number of images you launch.
                                 var foundFlag  = false;
-                                async.eachSeries(numList,
-                                function(item, callback) {
+                                async.eachSeries(numList, function(item, callback) {
                                     if(foundFlag == false) {    // Pop from the queue and check if either user has done that image before.
                                         client.rpop(REDIS_LIST, function(err, res) {
                                             knex.select().table('amthits').where(function() {
@@ -230,11 +229,9 @@ io.on('connection', function(socket){
                                     else{
                                         callback();
                                     }
-                                },
-                                function(err){});
+                                }, function(err){});
                                 flag = 1;
-                                break;
-                                if( flagfound==false) {
+                                if (foundFlag==false) {
                                     console.log('All images tried by this user: ' + socket.workerId);
                                     socket.emit('error', {errorMsg: "You completed tasks for all the images in the database. Thank you for all your work. Please try again later."});
                                 }
